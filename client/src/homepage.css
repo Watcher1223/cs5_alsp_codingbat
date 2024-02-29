@@ -1,0 +1,26 @@
+/* homepage.css */
+
+.header {
+    background-color: dodgerblue;
+    color: white;
+    text-align: center;
+    padding: 1px; 
+    font-size: 0.7em;
+  }
+  
+  .main {
+    display: flex;
+    justify-content: space-around;
+    padding: 2x;
+  }
+  
+  .action-buttons {
+    color: dodgerblue;
+    padding: 1.5px; 
+  }
+
+  .input{
+    cursor: pointer;
+    font-size : 12px;
+    padding: 5px;
+  }
