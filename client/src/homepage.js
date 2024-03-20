@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './homepage.css';
 import axios from 'axios';
+import IDE from './IDE';
 
 const Homepage = () => {
     const [scores, setScores] = useState(0);
@@ -102,6 +103,9 @@ const Homepage = () => {
                     )}
                 </div>
             </main>
+            <div className="ide-container">
+                    <IDE />
+            </div>
         </div>
     );
 };

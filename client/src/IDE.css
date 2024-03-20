@@ -1,0 +1,39 @@
+.ide {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .code-container {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    margin-left: 10px; 
+  }
+  
+  .line-numbers {
+    width: 15px; 
+    padding: 5px;
+    background-color: #dfdcdc;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+  }
+  
+  .line-number {
+    font-size: 12px;
+    color: #323232;
+    line-height: 1.5;
+    text-align: right;
+    margin-right: 5px; 
+  }
+  
+  .code-textarea {
+    flex: 1;
+    padding: 5px;
+    resize: vertical;
+    overflow-y: auto;
+    margin-left: 22px; 
+  }
+  
