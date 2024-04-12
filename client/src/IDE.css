@@ -1,39 +1,40 @@
-.ide {
+  .coding-challenge-container {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+  }
+  
+  .question-pane {
+    flex: 1;
+    max-width: 50%; 
+    overflow-y: auto;
+  }
+  
+  .ide-container {
+    flex: 1;
+    overflow-y: auto; 
+  }
+  
+  .ide {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    width: 100%; 
   }
   
   .code-container {
-    display: flex;
-    align-items: flex-start;
     position: relative;
-    margin-left: 10px; 
+    width: 100%;
   }
   
-  .line-numbers {
-    width: 15px; 
+  .output {
+    margin-top: 10px;
     padding: 5px;
-    background-color: #dfdcdc;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    overflow-y: auto;
+    border: 1px solid #ddd;
+    background: #f9f9f9;
   }
   
-  .line-number {
-    font-size: 12px;
-    color: #323232;
-    line-height: 1.5;
-    text-align: right;
-    margin-right: 5px; 
-  }
-  
-  .code-textarea {
-    flex: 1;
-    padding: 5px;
-    resize: vertical;
-    overflow-y: auto;
-    margin-left: 22px; 
+  .error {
+    color: red;
   }
   

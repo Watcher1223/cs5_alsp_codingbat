@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './homepage.css';
 import axios from 'axios';
 import IDE from './IDE';
+import Questions from './questions';  // Ensure filename case is consistent with import
 
 const Homepage = () => {
     const [scores, setScores] = useState(0);
@@ -9,60 +10,52 @@ const Homepage = () => {
     const [yourUsername, setYourUsername] = useState('');
     const [friendUsername, setFriendUsername] = useState('');
     const [friendAddStatus, setFriendAddStatus] = useState('');
-
     const [usernames, setUsernames] = useState([]);
 
-    // Fetch usernames from the backend on component mount
+    // Fetch usernames from the backend when component mounts
     useEffect(() => {
         const fetchUsernames = async () => {
             try {
                 const response = await axios.get('http://127.0.0.1:50012/get_usernames');
                 setUsernames(response.data.usernames);
             } catch (error) {
-                console.error('Error fetching usernames:', error.message);
+                console.error('Error fetching usernames:', error);
             }
         };
-
         fetchUsernames();
     }, []);
 
+    // Add username
     const handleAddUserName = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:50012/add_username', {
-                username: yourUsername,
-            });
-
+            const response = await axios.post('http://127.0.0.1:50012/add_username', { username: yourUsername });
             if (response.data.success) {
                 setAddUsername(yourUsername);
                 setYourUsername('');
-
-                // Fetch updated usernames after adding a new one
-                const updatedResponse = await axios.get('http://127.0.0.1:50012/get_usernames');
-                setUsernames(updatedResponse.data.usernames);
+                // Re-fetch usernames after adding a new one
+                setUsernames();  // Refactored to use the function defined above
             } else {
                 console.error(response.data.message);
             }
         } catch (error) {
-            console.error('Error adding username:', error.message);
+            console.error('Error adding username:', error);
         }
     };
 
+    // Add friend
     const handleAddFriend = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:50012/add_friend', {
-                friendUsername: friendUsername,
-            });
-
+            const response = await axios.post('http://127.0.0.1:50012/add_friend', { friendUsername: friendUsername });
             setFriendAddStatus(response.data.message);
         } catch (error) {
-            console.error('Error adding friend:', error.message);
+            console.error('Error adding friend:', error);
         }
     };
 
     return (
         <div>
             <header className="header">
-                <h2>Welcome to Alspencer Coding bat (acb)</h2>
+                <h2>Welcome to Alspencer Coding Bat (ACB)</h2>
             </header>
             <main className="main">
                 <div className="input">
@@ -82,7 +75,7 @@ const Homepage = () => {
                                 value={yourUsername}
                                 onChange={(e) => setYourUsername(e.target.value)}
                             />
-                            <button className='action-buttons' onClick={handleAddUserName}>
+                            <button className="action-buttons" onClick={handleAddUserName}>
                                 Add
                             </button>
                         </>
@@ -95,7 +88,7 @@ const Homepage = () => {
                         value={friendUsername}
                         onChange={(e) => setFriendUsername(e.target.value)}
                     />
-                    <button className='action-buttons' onClick={handleAddFriend}>
+                    <button className="action-buttons" onClick={handleAddFriend}>
                         Add Friend
                     </button>
                     {friendAddStatus && (
@@ -103,8 +96,13 @@ const Homepage = () => {
                     )}
                 </div>
             </main>
-            <div className="ide-container">
+            <div className="coding-challenge-container">
+                <div className="question-pane">
+                    <Questions username={yourUsername}/>  // Pass the current user's username
+                </div>
+                <div className="ide-container">
                     <IDE />
+                </div>
             </div>
         </div>
     );

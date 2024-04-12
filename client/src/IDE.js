@@ -1,53 +1,53 @@
-import React, { useState, useRef } from 'react';
-import './IDE.css'; 
+import React, { useState } from 'react';
+import axios from 'axios';
+import AceEditor from 'react-ace';
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/theme-github";
+
+import './IDE.css';
 
 const IDE = () => {
   const [code, setCode] = useState('');
-  const textareaRef = useRef(null);
-  const lineNumbersRef = useRef(null);
-  
-  const handleCodeChange = (e) => {
-    setCode(e.target.value);
+  const [output, setOutput] = useState(''); // To store the output
+  const [error, setError] = useState(''); // To store any errors
+
+  const runCode = async () => {
+    // Send the code to the Flask server
+    try {
+      const response = await axios.post('http://127.0.0.1:50012/run_code', {
+        code: code
+      });
+      setOutput(response.data.output); // Set the output in state
+      setError(''); // Clear any previous errors
+    } catch (err) {
+      setError(err.response?.data?.error || 'An error occurred, check your code'); // Set error message
+      setOutput(''); // Clear any previous output
+    }
   };
-  
-  const handleScroll = (e) => {
-    const { scrollTop, scrollHeight, clientHeight } = e.target;
-    const scrollPercentage = scrollTop / (scrollHeight - clientHeight);
-    textareaRef.current.scrollTop = scrollPercentage * (textareaRef.current.scrollHeight - textareaRef.current.clientHeight);
-  };
-  
-  const runCode = () => {
-    // SOME CODE EXECUTION LOGIC
-    console.log('Running code:', code);
-  };
-  
-  const generateLineNumbers = () => {
-    const codeLines = code.split('\n');
-    return codeLines.map((_, index) => (
-      <div className="line-number" key={index + 1}>
-        {index + 1}
-      </div>
-    ));
-  };
-  
+
   return (
     <div className="ide">
-      <button onClick={runCode}>Run</button>
+      <div className="run-container">
+        <button onClick={runCode}>Run</button>
+      </div>
       <div className="code-container">
-        <div className="line-numbers" onScroll={handleScroll} ref={lineNumbersRef}>
-          {generateLineNumbers()}
-        </div>
-        <textarea
-          ref={textareaRef}
-          className="code-textarea"
+        <AceEditor
+          mode="python"
+          theme="github"
+          name="UNIQUE_ID_OF_DIV"
+          onChange={setCode}
           value={code}
-          onChange={handleCodeChange}
-          placeholder="Write your code here..."
-          rows={10}
-          cols={50}
-          onScroll={handleScroll}
+          editorProps={{ $blockScrolling: true }}
+          setOptions={{
+            showLineNumbers: true,
+            tabSize: 2,
+          }}
+          width="100%"
+          height="350px"
         />
       </div>
+      {error && <div className="output error">{error}</div>}
+      {output && <div className="output">{output}</div>}
     </div>
   );
 };
