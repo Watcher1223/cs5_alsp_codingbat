@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './homepage.css';
 import axios from 'axios';
 import IDE from './IDE';
-import Questions from './questions';  // Ensure filename case is consistent with import
+import Questions from './questions';
 
 const Homepage = () => {
     const [scores, setScores] = useState(0);
@@ -11,6 +11,10 @@ const Homepage = () => {
     const [friendUsername, setFriendUsername] = useState('');
     const [friendAddStatus, setFriendAddStatus] = useState('');
     const [usernames, setUsernames] = useState([]);
+
+    const increaseScore = () => {
+        setScores((prevScore) => prevScore + 1);
+    };
 
     // Fetch usernames from the backend when component mounts
     useEffect(() => {
@@ -34,6 +38,7 @@ const Homepage = () => {
                 setYourUsername('');
                 // Re-fetch usernames after adding a new one
                 setUsernames();  // Refactored to use the function defined above
+                // reset the above line to fetchUsernames(); incase something dubious happens
             } else {
                 console.error(response.data.message);
             }
@@ -101,7 +106,7 @@ const Homepage = () => {
                     <Questions username={yourUsername}/>  // Pass the current user's username
                 </div>
                 <div className="ide-container">
-                    <IDE />
+                    <IDE onSuccess={increaseScore}/>
                 </div>
             </div>
         </div>

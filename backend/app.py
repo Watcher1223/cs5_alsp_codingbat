@@ -59,9 +59,12 @@ def run_code():
     try:
         # Execute the code
         exec(code)
+        output = redirected_output.getvalue()
+        return jsonify({"output": output, "error": None, "traceback": None, "success": True}), 200
     except Exception as e:
         # If there's an error, capture it and the traceback
-        return jsonify({"output": redirected_output.getvalue(), "error": str(e), "traceback": traceback.format_exc()}), 400
+        output = redirected_output.getvalue()
+        return jsonify({"output": output, "error": str(e), "traceback": traceback.format_exc(), "success": False}), 400
     finally:
         # Reset stdout and stderr to their original values
         sys.stdout = old_stdout

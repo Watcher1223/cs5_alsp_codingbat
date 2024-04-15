@@ -24,3 +24,8 @@
     font-size : 12px;
     padding: 5px;
   }
+
+  .question-pane {
+    max-height: 500px; 
+    overflow-y: auto;
+}
